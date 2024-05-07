@@ -1,5 +1,6 @@
 echo '[INFO] Make sure to run this script as the user that forejo runs as, over ssh, or with manual ownership grants to your current tty!'
 echo '[INFO] Now creating a gpg key, please fill out the inforemation with what you want for forejo to use.'
+echo '[INFO] Since the creator is uncertain if it is supported, this script recommends having no passphrase on this key.'
 echo '$ gpg --default-new-key-algo rsa4096 --gen-key'
 gpg --default-new-key-algo rsa4096 --gen-key
 echo '[INFO] Listing keys'
