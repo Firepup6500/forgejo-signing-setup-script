@@ -8,3 +8,6 @@ echo '$ gpg --list-secret-keys --keyid-format=long'
 gpg --list-secret-keys --keyid-format=long
 key_id=$(gpg --list-secret-keys --keyid-format=long|grep sec|sed -E 's_.+   .+/([^ ]+) .+_\1_g')
 echo "[INFO] Detected key: $key_id"
+echo '[INFO] Having git recognize this as the default signing key for this user...'
+echo "$ git config --global user.signingkey $key_id"
+git config --global user.signingkey $key_id
