@@ -5,4 +5,5 @@ gpg --default-new-key-algo rsa4096 --gen-key
 echo '[INFO] Listing keys'
 echo '$ gpg --list-secret-keys --keyid-format=long'
 gpg --list-secret-keys --keyid-format=long
-
+key_id=$(gpg --list-secret-keys --keyid-format=long|grep sec|sed -E 's_.+   .+/([^ ]+) .+_\1_g')
+echo "[INFO] Detected key: $key_id"
