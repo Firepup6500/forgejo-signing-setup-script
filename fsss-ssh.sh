@@ -4,24 +4,33 @@ read -p '"Real Name" for gpg and git [Testing]: ' rname
 rname=${rname:-Testing}
 read -p 'Email [test@test.test]: ' email
 email=${email:-test@test.test}
-read -p 'Override default git config. Unless forgejo runs as you, this should be "Y" (Y|N) [Y]: ' ovrgit
-read -p 'Use default gpg directory. Unless you know exactly what you\'re doing, you should leave this alone! (Y|N) [Y]: ' ovrgpg
+read -p 'Override default git config. Unless forgejo runs as you, this should be left alone! (Y|N) [Y]: ' ovrgit
+ovrgit=${ovrgit:-Y}
+read -p "Use default gpg directory. Unless you know exactly what you're doing, you should leave this alone! (Y|N) [Y]: " ovrgpg
+ovrgpg=${ovrgpg:-Y}
 temp=~/.gnupg
-[[ $overgpg == [yY] ]] read -p "GPG home [$temp]: " tmp
-gpghome=${tmp:-$temp}
+[[ $overgpg == n || $ovrgpg == N ]] && read -p "GPG home [$temp]: " gpghome
+gpghome=${gpghome:-~/.gnupg}
+echo "[INFO] Ensuring '$gpghome' exists with the correct permissions"
+mkdir -p "$gpghome"
+chmod 700 "$gpghome"
 echo '[INFO] Now creating a gpg key using the real name and email provided'
 echo "$ GPGHOME=$gpghome gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' \"$rname <$email>\""
-GNUPGHOME=$gpghome gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' "$rname <$email>"
+GNUPGHOME="$gpghome" gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' "$rname <$email>"
 echo '[INFO] Listing keys'
 echo "$ GNUPGHOME=$gpghome gpg --list-secret-keys --keyid-format=long"
-GNUPGHOME=$gpghome gpg --list-secret-keys --keyid-format=long
-key_id=$(GNUPGHOME=$gpghome gpg --list-secret-keys --keyid-format=long|grep sec|sed -E 's_.+   .+/([^ ]+) .+_\1_g')
+GNUPGHOME="$gpghome" gpg --list-secret-keys --keyid-format=long
+key_id=$(GNUPGHOME="$gpghome" gpg --list-secret-keys --keyid-format=long|grep sec|sed -E 's_.+   .+/([^ ]+) .+_\1_g')
 echo "[INFO] Detected key: $key_id"
-echo '[INFO] Having git recognize this as the default signing key for this user...'
-echo "$ git config --global user.signingkey $key_id"
-git config --global user.signingkey $key_id
-echo "[INFO] Having git use \"$rname\" as name and \"$email\" as email..."
-echo "$ git config --global user.name \"$rname\""
-git config --global user.name "$rname"
-echo "$ git config --global user.email \"$email\""
-git config --global user.email "$email"
+if [[ "${ovrgit}" == "y" || "${ovrgit}" == "Y" ]] ; then
+  echo '[INFO] Having git recognize this as the default signing key for this user...'
+  echo "$ git config --global user.signingkey $key_id"
+  git config --global user.signingkey $key_id
+  echo "[INFO] Having git use \"$rname\" as name and \"$email\" as email..."
+  echo "$ git config --global user.name \"$rname\""
+  git config --global user.name "$rname"
+  echo "$ git config --global user.email \"$email\""
+  git config --global user.email "$email"
+else
+  echo '[INFO] Not Reconfiguring git!'
+fi
