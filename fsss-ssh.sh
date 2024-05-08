@@ -4,8 +4,8 @@ read -p '"Real Name" for gpg and git: ' rname
 email="NUL"
 read -p 'Email: ' email
 echo '[INFO] Now creating a gpg key, please fill out the inforemation with what you want for forejo to use.'
-echo "$ gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' '$rname <$email>'"
-gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' '$rname <$email>'
+echo "$ gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' \"$rname <$email>\""
+gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' "$rname <$email>"
 echo '[INFO] Listing keys'
 echo '$ gpg --list-secret-keys --keyid-format=long'
 gpg --list-secret-keys --keyid-format=long
