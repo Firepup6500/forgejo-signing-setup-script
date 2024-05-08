@@ -1,16 +1,21 @@
 echo '[NOTICE] Make sure to run this script as the user that forejo runs as, via ssh or with manual ownership grants to your current tty!'
-echo '[NOTICE] This script modifes your default git config! If forejo runs as your user, then this will mess up your default git config!'
-rname="NUL"
-read -p '"Real Name" for gpg and git: ' rname
-email="NUL"
-read -p 'Email: ' email
+#echo '[NOTICE] This script modifes your default git config! If forejo runs as your user, then this will mess up your default git config!'
+read -p '"Real Name" for gpg and git [Testing]: ' rname
+rname=${rname:-Testing}
+read -p 'Email [test@test.test]: ' email
+email=${email:-test@test.test}
+read -p 'Override default git config. Unless forgejo runs as you, this should be "Y" (Y|N) [Y]: ' ovrgit
+read -p 'Use default gpg directory. Unless you know exactly what you\'re doing, you should leave this alone! (Y|N) [Y]: ' ovrgpg
+temp=~/.gnupg
+[[ $overgpg == [yY] ]] read -p "GPG home [$temp]: " tmp
+gpghome=${tmp:-$temp}
 echo '[INFO] Now creating a gpg key using the real name and email provided'
-echo "$ gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' \"$rname <$email>\""
-gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' "$rname <$email>"
+echo "$ GPGHOME=$gpghome gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' \"$rname <$email>\""
+GNUPGHOME=$gpghome gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' "$rname <$email>"
 echo '[INFO] Listing keys'
-echo '$ gpg --list-secret-keys --keyid-format=long'
-gpg --list-secret-keys --keyid-format=long
-key_id=$(gpg --list-secret-keys --keyid-format=long|grep sec|sed -E 's_.+   .+/([^ ]+) .+_\1_g')
+echo "$ GNUPGHOME=$gpghome gpg --list-secret-keys --keyid-format=long"
+GNUPGHOME=$gpghome gpg --list-secret-keys --keyid-format=long
+key_id=$(GNUPGHOME=$gpghome gpg --list-secret-keys --keyid-format=long|grep sec|sed -E 's_.+   .+/([^ ]+) .+_\1_g')
 echo "[INFO] Detected key: $key_id"
 echo '[INFO] Having git recognize this as the default signing key for this user...'
 echo "$ git config --global user.signingkey $key_id"
