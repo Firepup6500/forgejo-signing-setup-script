@@ -1,3 +1,4 @@
+#!/bin/bash
 echo '[NOTICE] Make sure to run this script as the user that forejo runs as, via ssh or with manual ownership grants to your current tty!'
 #echo '[NOTICE] This script modifes your default git config! If forejo runs as your user, then this will mess up your default git config!'
 read -p '"Real Name" for gpg and git [Testing]: ' rname
