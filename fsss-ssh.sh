@@ -15,7 +15,7 @@ echo "[INFO] Detected key: $key_id"
 echo '[INFO] Having git recognize this as the default signing key for this user...'
 echo "$ git config --global user.signingkey $key_id"
 git config --global user.signingkey $key_id
-echo "[INFO] Having git use \"$rname\" as name and \"email\" as email..."
+echo "[INFO] Having git use \"$rname\" as name and \"$email\" as email..."
 echo "$ git config --global user.name \"$rname\""
 git config --global user.name "$rname"
 echo "$ git config --global user.email \"$email\""
