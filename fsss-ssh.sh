@@ -34,4 +34,11 @@ if [[ "${ovrgit}" == "y" || "${ovrgit}" == "Y" ]] ; then
   git config --global user.email "$email"
 else
   echo '[INFO] Not Reconfiguring git!'
+  echo '[INFO] If you want forgejo to use the new gpg key, you\'ll need to set a few keys in `app.ini`.'
+  echo '[INFO] The keys you\'ll need to set are:'
+  echo '[repository.signing]'
+  echo "SINGING_KEY = $key_id"
+  echo "SIGNING_NAME = $rname"
+  echo "SIGNING_EMAIL = $email"
+  echo '[INFO] This script does recommend that you use the default git setup with GPG keys, however.'
 fi
