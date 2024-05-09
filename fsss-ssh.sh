@@ -24,6 +24,7 @@ GNUPGHOME="$gpghome" gpg --list-secret-keys --keyid-format=long
 key_id=$(GNUPGHOME="$gpghome" gpg --list-secret-keys --keyid-format=long|grep sec|sed -E 's_.+   .+/([^ ]+) .+_\1_g')
 echo "[INFO] Detected key: $key_id"
 if [[ "${ovrgit}" == "y" || "${ovrgit}" == "Y" ]] ; then
+  echo '[NOTICE] Reconfiguring git!'
   echo '[INFO] Having git recognize this as the default signing key for this user...'
   echo "$ git config --global user.signingkey $key_id"
   git config --global user.signingkey $key_id
@@ -33,7 +34,7 @@ if [[ "${ovrgit}" == "y" || "${ovrgit}" == "Y" ]] ; then
   echo "$ git config --global user.email \"$email\""
   git config --global user.email "$email"
 else
-  echo '[INFO] Not Reconfiguring git!'
+  echo '[NOTICE] Not Reconfiguring git!'
   echo '[INFO] If you want forgejo to use the new gpg key, you\'ll need to set a few keys in `app.ini`.'
   echo '[INFO] The keys you\'ll need to set are:'
   echo '[repository.signing]'
@@ -41,7 +42,7 @@ else
   echo "SIGNING_NAME = $rname"
   echo "SIGNING_EMAIL = $email"
   echo '[INFO] This script does recommend that you use the default git setup with GPG keys, however.'
-  [[ $overgpg == n || $ovrgpg == N ]] && echo '[INFO] I notice you\'re trying to use a non-standard gpg directory'
-  [[ $overgpg == n || $ovrgpg == N ]] && echo '[INFO] I have no idea how to make forgejo read from a non-standard gpg dirctory'
-  [[ $overgpg == n || $ovrgpg == N ]] && echo '[INFO] So you\'re on your own from here. I hope you know what you\'re doing.'
+  [[ $overgpg == n || $ovrgpg == N ]] && echo '[NOTICE] I notice you\'re trying to use a non-standard gpg directory'
+  [[ $overgpg == n || $ovrgpg == N ]] && echo '[NOTICE] I have no idea how to make forgejo read from a non-standard gpg dirctory'
+  [[ $overgpg == n || $ovrgpg == N ]] && echo '[NOTICE] So you\'re on your own from here. I hope you know what you\'re doing.'
 fi
