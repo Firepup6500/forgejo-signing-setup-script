@@ -13,7 +13,9 @@ temp=~/.gnupg
 [[ $overgpg == n || $ovrgpg == N ]] && read -p "GPG home [$temp]: " gpghome
 gpghome=${gpghome:-~/.gnupg}
 echo "[INFO] Ensuring '$gpghome' exists with the correct permissions"
+echo "$ mkdir -p $gpghome"
 mkdir -p "$gpghome"
+echo "$ chmod 700 $gpghome"
 chmod 700 "$gpghome"
 echo '[INFO] Now creating a gpg key using the real name and email provided'
 echo "$ GPGHOME=$gpghome gpg --default-new-key-algo rsa4096 --quick-gen-key --batch --passphrase '' \"$rname <$email>\""
