@@ -47,7 +47,7 @@ else
   echo "SIGNING_NAME = $rname"
   echo "SIGNING_EMAIL = $email"
   echo '[INFO] This script does recommend that you use the default git setup with GPG keys, however.'
-  [[ $overgpg == n || $ovrgpg == N ]] && echo '[NOTICE] I notice you\'re trying to use a non-standard gpg directory'
-  [[ $overgpg == n || $ovrgpg == N ]] && echo '[NOTICE] I have no idea how to make forgejo read from a non-standard gpg dirctory'
-  [[ $overgpg == n || $ovrgpg == N ]] && echo '[NOTICE] So you\'re on your own from here. I hope you know what you\'re doing.'
+  [[ $ovrgpg == n || $ovrgpg == N ]] && echo '[NOTICE] I notice you\'re trying to use a non-standard gpg directory'
+  [[ $ovrgpg == n || $ovrgpg == N ]] && echo '[NOTICE] I have no idea how to make forgejo read from a non-standard gpg dirctory'
+  [[ $ovrgpg == n || $ovrgpg == N ]] && echo '[NOTICE] So you\'re on your own from here. I hope you know what you\'re doing.'
 fi
