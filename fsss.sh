@@ -1,6 +1,9 @@
 #!/bin/bash
 echo '[NOTICE] Make sure to run this script as the user that forejo runs as, via ssh or with manual ownership grants to your current tty!'
-#echo '[NOTICE] This script modifes your default git config! If forejo runs as your user, then this will mess up your default git config!'
+echo '[NOTICE] If you\'re running this script over sudo or su into the other account this WILL FAIL, gpg will not tolerate it!'
+echo '[NOTICE] While it is not recommended by this script, you can set up gpg in a non-standard directory.'
+echo '[NOTICE] If you do so, this script will disable git modifications, regardless of your selection.'
+echo '[NOTICE] Otherwise, this script will modify the global git configuation for the user it runs as, and use the default GPG home.'
 read -p '"Real Name" for gpg and git [Testing]: ' rname
 rname=${rname:-Testing}
 read -p 'Email [test@test.test]: ' email
